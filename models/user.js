@@ -2,12 +2,13 @@ const {DataTypes} = require('sequelize');
 const bcryptjs = require('bcryptjs');
 
 const {dbConnection} = require('../database/config');
-const Role = require('../models/roles');
+const Role = require('./role');
 
 const UserSchema = dbConnection.define('users', {
     id: {
-        type: DataTypes.UUID,
-        primaryKey: true
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true
     },
     name: {
         type: DataTypes.STRING,

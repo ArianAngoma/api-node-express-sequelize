@@ -1,9 +1,9 @@
-const User = require('../models/user');
+const {User} = require('../models');
 
-const usersGet = async (req, res) => {
+const getUser = async (req, res) => {
     res.json('Hola');
 }
 
 module.exports = {
-    usersGet
+    getUser
 }

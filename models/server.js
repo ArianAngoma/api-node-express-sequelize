@@ -11,7 +11,8 @@ class Server {
         this.port = process.env.PORT;
 
         this.path = {
-            users: '/api/users'
+            users: '/api/users',
+            roles: '/api/roles'
         }
 
         // Conección a la base de datos
@@ -55,6 +56,7 @@ class Server {
 
     routes() {
         this.app.use(this.path.users, require('../routes/users'));
+        this.app.use(this.path.roles, require('../routes/roles'));
     }
 
     listen() {
