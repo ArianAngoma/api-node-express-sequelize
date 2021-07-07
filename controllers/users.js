@@ -1,4 +1,5 @@
 const {User, Role} = require('../models');
+const bcryptjs = require('bcryptjs');
 
 const getUser = async (req, res) => {
     const {limit = 5, from = 0} = req.query;
@@ -46,8 +47,25 @@ const createUser = async (req, res) => {
     res.json(user);
 }
 
+const updateUser = async (req, res) => {
+    const _id = req.params.id;
+    const {id, password, google, state, ...info} = req.body;
+
+    // Si el usuario quiere actualizar su password
+    if (password) {
+        console.log('Quiero editar mi constraseña')
+        info.password = bcryptjs.hashSync(password, bcryptjs.genSaltSync())
+    }
+
+    const user = await User.findByPk(_id);
+    await user.update(info);
+
+    res.json(user);
+}
+
 module.exports = {
     getUser,
     getUserById,
-    createUser
+    createUser,
+    updateUser
 }

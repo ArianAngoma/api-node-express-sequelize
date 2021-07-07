@@ -1,13 +1,15 @@
 const {Router} = require('express');
 const {check} = require('express-validator');
-const {getUser, getUserById, createUser} = require("../controllers/users");
+const {getUser, getUserById, createUser, updateUser} = require("../controllers/users");
 const {validateFields} = require('../middlewares');
 const {userExistsByEmail, roleExistsById, userExistsById, isStateUserTrue} = require('../helpers')
 
 const router = Router();
 
+// Obtener USUARIOS
 router.get('/', getUser);
 
+// Obtener USUARIO por ID
 router.get('/:id', [
     check('id', 'Id de usuario es requerido').notEmpty(),
     check('id').custom(userExistsById),
@@ -15,6 +17,7 @@ router.get('/:id', [
     validateFields
 ], getUserById);
 
+// Crear USUARIO
 router.post('/', [
     check('name', 'Nombre es requerido').notEmpty(),
     check('email', 'Email es requerido').notEmpty(),
@@ -24,5 +27,17 @@ router.post('/', [
     check('roleId').custom(roleExistsById),
     validateFields
 ], createUser);
+
+
+// Actualizar USUARIO por ID
+router.put('/:id', [
+    check('id', 'Id de usuario es requerido').notEmpty(),
+    check('id').custom(userExistsById),
+    check('id').custom(isStateUserTrue),
+    check('email', 'Email no válido').isEmail().optional(),
+    check('email').custom(userExistsByEmail).optional(),
+    check('roleId').custom(roleExistsById).optional(),
+    validateFields
+], updateUser)
 
 module.exports = router;

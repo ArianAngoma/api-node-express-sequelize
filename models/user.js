@@ -44,6 +44,9 @@ UserSchema.prototype.toJSON = function () {
 
     // Eliminar la contraseña al regersar User (No elimina de la DB)
     delete values.password;
+
+    values.uid = values.id;
+    delete values.id;
     return values;
 }
 
