@@ -22,6 +22,16 @@ const getUser = async (req, res) => {
     });
 }
 
+const getUserById = async (req, res) => {
+    const {id} = req.params;
+    const user = await User.findByPk(id, {
+        include: [
+            {model: Role}
+        ]
+    });
+    res.json(user);
+}
+
 const createUser = async (req, res) => {
     const {name, email, password, roleId} = req.body;
     const user = await User.create({name, email, password, roleId});
@@ -38,5 +48,6 @@ const createUser = async (req, res) => {
 
 module.exports = {
     getUser,
+    getUserById,
     createUser
 }

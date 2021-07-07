@@ -19,8 +19,20 @@ const userExistsByEmail = async (email, {req}) => {
     if ((existsEmail) && (existsEmail.id !== Number(req.params.id))) throw new Error(`El usuario con email ${email} ya esta registrado en la DB`);
 }
 
+const userExistsById = async (id) => {
+    const existsUser = await User.findByPk(id);
+    if (!existsUser) throw new Error(`El usuario con id ${id} no existe`);
+}
+
+const isStateUserTrue = async (id) => {
+    const {state} = await User.findByPk(id);
+    if (!state) throw new Error(`El usuario con id ${id} no existe - state: false`);
+}
+
 module.exports = {
     roleExistsById,
     roleExistsByName,
-    userExistsByEmail
+    userExistsByEmail,
+    userExistsById,
+    isStateUserTrue
 }
