@@ -1,6 +1,6 @@
 const {Router} = require('express');
 const {check} = require('express-validator');
-const {getUser, getUserById, createUser, updateUser} = require("../controllers/users");
+const {getUser, getUserById, createUser, updateUser, deleteUser} = require("../controllers/users");
 const {validateFields} = require('../middlewares');
 const {userExistsByEmail, roleExistsById, userExistsById, isStateUserTrue} = require('../helpers')
 
@@ -38,6 +38,14 @@ router.put('/:id', [
     check('email').custom(userExistsByEmail).optional(),
     check('roleId').custom(roleExistsById).optional(),
     validateFields
-], updateUser)
+], updateUser);
+
+// Eliminar USUARIO por ID
+router.delete('/:id', [
+    check('id', 'Id de usuario es requerido').notEmpty(),
+    check('id').custom(userExistsById),
+    check('id').custom(isStateUserTrue),
+    validateFields
+], deleteUser)
 
 module.exports = router;

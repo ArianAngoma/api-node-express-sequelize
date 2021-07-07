@@ -7,7 +7,7 @@ const getUser = async (req, res) => {
     const {count, rows} = await User.findAndCountAll({
         // Obtener todos los USUARIOS con STATE TRUE
         where: {
-          state: true
+            state: true
         },
         // Excluir roleId
         // attributes: {exclude: ['roleId']},
@@ -63,9 +63,20 @@ const updateUser = async (req, res) => {
     res.json(user);
 }
 
+const deleteUser = async (req, res) => {
+    const {id} = req.params;
+    const result = await User.update({state: false}, {
+        where: {
+            id
+        }
+    })
+    res.json(result);
+}
+
 module.exports = {
     getUser,
     getUserById,
     createUser,
-    updateUser
+    updateUser,
+    deleteUser
 }
