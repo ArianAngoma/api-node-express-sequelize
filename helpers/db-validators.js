@@ -13,7 +13,14 @@ const roleExistsByName = async (name, {req}) => {
     if ((existsRole) && (existsRole.id !== Number(req.params.id))) throw new Error(`El rol ${name} ya esta registrado en la DB`);
 }
 
+// users => Valida si existe USER por EMAIL en la DB
+const userExistsByEmail = async (email, {req}) => {
+    const existsEmail = await User.findOne({where: {email}});
+    if ((existsEmail) && (existsEmail.id !== Number(req.params.id))) throw new Error(`El usuario con email ${email} ya esta registrado en la DB`);
+}
+
 module.exports = {
     roleExistsById,
-    roleExistsByName
+    roleExistsByName,
+    userExistsByEmail
 }

@@ -26,9 +26,9 @@ const UserSchema = dbConnection.define('users', {
         type: DataTypes.STRING
     },
     state: {
-        type: DataTypes.BOOLEAN,
+        type: DataTypes.INTEGER,
         required: true,
-        default: true
+        defaultValue: 1
     }
 }, {
     hooks: {
@@ -38,8 +38,6 @@ const UserSchema = dbConnection.define('users', {
         }
     }
 })
-
-UserSchema.belongsTo(Role);
 
 UserSchema.prototype.toJSON = function () {
     const values = Object.assign({}, this.get());
