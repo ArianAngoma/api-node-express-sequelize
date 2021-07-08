@@ -2,7 +2,6 @@ const {DataTypes} = require('sequelize');
 const bcryptjs = require('bcryptjs');
 
 const {dbConnection} = require('../database/config');
-const Role = require('./role');
 
 const UserSchema = dbConnection.define('users', {
     id: {
