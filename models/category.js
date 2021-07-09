@@ -10,8 +10,7 @@ const CategorySchema = dbConnection.define('categories', {
     },
     name: {
         type: DataTypes.STRING,
-        required: true,
-        unique: true
+        required: true
     },
     state: {
         type: DataTypes.INTEGER,

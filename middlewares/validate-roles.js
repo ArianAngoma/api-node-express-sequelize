@@ -1,4 +1,4 @@
-const {User, Role} = require('../models');
+const {Role} = require('../models');
 
 const isAdminRole = async (req, res, next) => {
     if (!req.user) return res.status(500).json({msg: 'Verificar el token primero'});

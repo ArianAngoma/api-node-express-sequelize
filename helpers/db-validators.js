@@ -1,4 +1,4 @@
-const {Role, User} = require('../models');
+const {Role, User, Category} = require('../models');
 
 // roles => Valida si existe ROLE por ID en la DB
 const roleExistsById = async (id) => {
@@ -43,6 +43,14 @@ const isStateUserTrueByEmail = async (email) => {
     if (!state) throw new Error(`El usuario con ${email} no existe - state: false`);
 }
 
+// categories => Valida si existe CATEGORIA por NAME
+const existsCategoryByName = async (name) => {
+    const existsCategory = await Category.findAll({where: {name: name.toUpperCase()}});
+    if (existsCategory) existsCategory.forEach(categories => {
+        if (categories.state) throw new Error(`La categoria ${name} ya existe en la DB`);
+    });
+}
+
 module.exports = {
     roleExistsById,
     roleExistsByName,
@@ -50,5 +58,6 @@ module.exports = {
     userExistsByEmailAuth,
     userExistsById,
     isStateUserTrueById,
-    isStateUserTrueByEmail
+    isStateUserTrueByEmail,
+    existsCategoryByName
 }
