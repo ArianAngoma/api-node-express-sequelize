@@ -1,7 +1,7 @@
 const {Router} = require('express');
 const {check} = require('express-validator');
 const {getRoles, getRoleById, createRole, updateRole, deleteRole} = require("../controllers/roles");
-const {validateFields, validateJWT, isAdminRole} = require('../middlewares');
+const {validateFields, validateJWT, isAdminRole, hasRole} = require('../middlewares');
 const {roleExistsById, roleExistsByName} = require('../helpers')
 
 const router = Router();
@@ -9,7 +9,12 @@ const router = Router();
 // Obtener todos los ROLES
 router.get('/', [
     validateJWT,
-    isAdminRole
+    isAdminRole,
+
+    // Valida si el USUARIO tiene uno de estos ROLES
+    // hasRole('USER', 'UBER'),
+
+    validateFields
 ], getRoles);
 
 // Obtener ROL por ID

@@ -1,4 +1,4 @@
-const {Role} = require('../models');
+const {User, Role} = require('../models');
 
 const isAdminRole = async (req, res, next) => {
     if (!req.user) return res.status(500).json({msg: 'Verificar el token primero'});
@@ -13,6 +13,23 @@ const isAdminRole = async (req, res, next) => {
     next();
 }
 
+const hasRole = (...roles) => {
+    return async (req, res, next) => {
+        if (!req.user) return res.status(500).json({
+            msg: 'Verificar el token primero'
+        });
+
+        const {name} = await Role.findByPk(req.user.id);
+
+        if (!roles.includes(name)) return res.status(401).json({
+            msg: `El servicio requiere uno de estos roles ${roles}`
+        });
+
+        next();
+    }
+}
+
 module.exports = {
-    isAdminRole
+    isAdminRole,
+    hasRole
 }
