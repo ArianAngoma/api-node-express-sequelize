@@ -19,22 +19,36 @@ const userExistsByEmail = async (email, {req}) => {
     if ((existsEmail) && (existsEmail.id !== Number(req.params.id))) throw new Error(`El usuario con email ${email} ya esta registrado en la DB`);
 }
 
+// users => Valida si existe USER por EMAIL en la DB para la ruta de Auth
+const userExistsByEmailAuth = async (email) => {
+    const existsEmail = await User.findOne({where: {email}});
+    if (!existsEmail) throw new Error(`El usuario con email ${email} no existe en la DB`);
+}
+
 // users => Valida si existe USER por ID en la DB
 const userExistsById = async (id) => {
     const existsUser = await User.findByPk(id);
     if (!existsUser) throw new Error(`El usuario con id ${id} no existe`);
 }
 
-// users = Valida si STATE de USER es TRUE
-const isStateUserTrue = async (id) => {
+// users = Valida si STATE de USER es TRUE por ID
+const isStateUserTrueById = async (id) => {
     const {state} = await User.findByPk(id);
     if (!state) throw new Error(`El usuario con id ${id} no existe - state: false`);
+}
+
+// users => Valida si STATE de USER es TRUE por EMAIL
+const isStateUserTrueByEmail = async (email) => {
+    const {state} = await User.findOne({where: {email}});
+    if (!state) throw new Error(`El usuario con ${email} no existe - state: false`);
 }
 
 module.exports = {
     roleExistsById,
     roleExistsByName,
     userExistsByEmail,
+    userExistsByEmailAuth,
     userExistsById,
-    isStateUserTrue
+    isStateUserTrueById,
+    isStateUserTrueByEmail
 }

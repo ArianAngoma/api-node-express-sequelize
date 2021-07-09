@@ -13,7 +13,8 @@ class Server {
 
         this.path = {
             users: '/api/users',
-            roles: '/api/roles'
+            roles: '/api/roles',
+            auth: '/api/auth'
         }
 
         // Conección a la base de datos
@@ -58,6 +59,7 @@ class Server {
     routes() {
         this.app.use(this.path.users, require('../routes/users'));
         this.app.use(this.path.roles, require('../routes/roles'));
+        this.app.use(this.path.auth, require('../routes/auth'));
     }
 
     listen() {

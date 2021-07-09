@@ -2,7 +2,7 @@ const {Router} = require('express');
 const {check} = require('express-validator');
 const {getUser, getUserById, createUser, updateUser, deleteUser} = require("../controllers/users");
 const {validateFields} = require('../middlewares');
-const {userExistsByEmail, roleExistsById, userExistsById, isStateUserTrue} = require('../helpers')
+const {userExistsByEmail, roleExistsById, userExistsById, isStateUserTrueById} = require('../helpers')
 
 const router = Router();
 
@@ -13,7 +13,7 @@ router.get('/', getUser);
 router.get('/:id', [
     check('id', 'Id de usuario es requerido').notEmpty(),
     check('id').custom(userExistsById),
-    check('id').custom(isStateUserTrue),
+    check('id').custom(isStateUserTrueById),
     validateFields
 ], getUserById);
 
@@ -33,7 +33,7 @@ router.post('/', [
 router.put('/:id', [
     check('id', 'Id de usuario es requerido').notEmpty(),
     check('id').custom(userExistsById),
-    check('id').custom(isStateUserTrue),
+    check('id').custom(isStateUserTrueById),
     check('email', 'Email no válido').isEmail().optional(),
     check('email').custom(userExistsByEmail).optional(),
     check('roleId').custom(roleExistsById).optional(),
@@ -44,7 +44,7 @@ router.put('/:id', [
 router.delete('/:id', [
     check('id', 'Id de usuario es requerido').notEmpty(),
     check('id').custom(userExistsById),
-    check('id').custom(isStateUserTrue),
+    check('id').custom(isStateUserTrueById),
     validateFields
 ], deleteUser)
 
