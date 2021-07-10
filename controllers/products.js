@@ -69,8 +69,18 @@ const createProduct = async (req, res) => {
     res.json(category);
 }
 
+const updateProduct = async (req, res) => {
+    const {id} = req.params;
+    const {id: idBody, userId, state, img, ...info} = req.body;
+
+    const product = await Product.findByPk(id);
+    await product.update(info);
+    res.json(product);
+}
+
 module.exports = {
     createProduct,
     getProductById,
-    getProducts
+    getProducts,
+    updateProduct
 }

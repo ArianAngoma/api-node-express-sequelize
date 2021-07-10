@@ -1,8 +1,8 @@
 const {Router} = require('express');
 const {check} = require('express-validator');
-const {getProducts, getProductById, createProduct} = require('../controllers/products');
+const {getProducts, getProductById, createProduct, updateProduct} = require('../controllers/products');
 const {validateFields, validateJWT} = require("../middlewares");
-const {existsProductByNameAndIdUser, existsCategoryById, isStateCategoryTrueById, existsProductById} = require('../helpers');
+const {existsProductByNameAndIdUser, existsCategoryById, isStateCategoryTrueById, existsProductById, isRoleIdSameIdUser, existsProductByNameToUpdate} = require('../helpers');
 
 const router = Router();
 
@@ -30,5 +30,18 @@ router.post('/', [
     check('categoryId').custom(isStateCategoryTrueById),
     validateFields
 ], createProduct);
+
+// Actualizar CATEGORY por ID
+router.put('/:id', [
+    validateJWT,
+    check('id', 'Id de producto es requerido').notEmpty(),
+    check('id').custom(existsProductById),
+    check('id').custom(isRoleIdSameIdUser),
+    check('name').custom(existsProductByNameToUpdate).optional(),
+    check('price', 'Precio no válido').isNumeric().optional(),
+    check('categoryId').custom(existsCategoryById).optional(),
+    check('categoryId').custom(isStateCategoryTrueById).optional(),
+    validateFields
+], updateProduct);
 
 module.exports = router;

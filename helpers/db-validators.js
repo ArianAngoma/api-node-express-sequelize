@@ -73,6 +73,18 @@ const existsProductById = async (id) => {
     if (!existsProduct) throw new Error(`El producto con ${id} no existe`);
 }
 
+// products => Valida si USER puede editar PRODUCT
+const isRoleIdSameIdUser = async (id, {req}) => {
+    const {userId} = await Product.findByPk(id);
+    if (userId !== req.user.id) throw new Error(`No puedes editar el producto con id ${id} - no lo creaste`);
+}
+
+// products => Valida si existe PRODUCT por NAME y si es el mismo USER quien lo creó
+const existsProductByNameToUpdate = async (name, {req}) => {
+    const existsProduct = await Product.findOne({where: {name: name.toUpperCase(), state: true, userId: req.user.id}});
+    if ((existsProduct) && (existsProduct.id !== Number(req.params.id))) throw new Error(`El producto ${name} ya existe`)
+}
+
 
 module.exports = {
     roleExistsById,
@@ -86,5 +98,7 @@ module.exports = {
     existsCategoryById,
     isStateCategoryTrueById,
     existsProductByNameAndIdUser,
-    existsProductById
+    existsProductById,
+    isRoleIdSameIdUser,
+    existsProductByNameToUpdate
 }
