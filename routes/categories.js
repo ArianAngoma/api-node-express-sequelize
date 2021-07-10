@@ -1,6 +1,6 @@
 const {Router} = require('express');
 const {check} = require('express-validator');
-const {getCategories, getCategoryById, createCategory, updateCategory} = require('../controllers/categories');
+const {getCategories, getCategoryById, createCategory, updateCategory, deleteCategory} = require('../controllers/categories');
 const {validateJWT, validateFields, isAdminRole} = require('../middlewares');
 const {existsCategoryByName, existsCategoryById, isStateCategoryTrueById} = require('../helpers');
 
@@ -29,6 +29,7 @@ router.post('/', [
     validateFields
 ], createCategory);
 
+// Actualizar CATEGORY by ID (Rol Admin)
 router.put('/:id', [
     validateJWT,
     isAdminRole,
@@ -39,5 +40,15 @@ router.put('/:id', [
     check('name').custom(existsCategoryByName),
     validateFields
 ], updateCategory);
+
+// Eliminar Category by ID (Rol Admin)
+router.delete('/:id', [
+    validateJWT,
+    isAdminRole,
+    check('id', 'Id es requerido').notEmpty(),
+    check('id').custom(existsCategoryById),
+    check('id').custom(isStateCategoryTrueById),
+    validateFields
+], deleteCategory)
 
 module.exports = router;

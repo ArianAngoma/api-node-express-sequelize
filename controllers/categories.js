@@ -64,9 +64,20 @@ const updateCategory = async (req, res) => {
     res.json(category);
 }
 
+const deleteCategory = async (req, res) => {
+    const {id} = req.params;
+    const result = await Category.update({state: false}, {
+        where: {
+            id
+        }
+    });
+    res.json(result);
+}
+
 module.exports = {
     getCategories,
     getCategoryById,
     createCategory,
-    updateCategory
+    updateCategory,
+    deleteCategory
 }
