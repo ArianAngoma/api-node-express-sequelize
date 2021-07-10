@@ -1,4 +1,30 @@
-const {Product} = require('../models');
+const {Product, User, Category} = require('../models');
+
+const getProduct = async (req, res) => {
+    const {limit = 5, from = 0} = req.query;
+
+    const {count, rows} = await Product.findAndCountAll({
+        where: {
+            state: true
+        },
+        include: [
+            {
+                model: User,
+                attributes: {exclude: ['password']},
+            },
+            {
+                model: Category
+            }
+        ],
+        offset: Number(from),
+        limit: Number(limit)
+    })
+
+    res.json({
+        count,
+        products: rows
+    });
+}
 
 const createProduct = async (req, res) => {
     const {state, userId, ...body} = req.body;
@@ -30,5 +56,6 @@ const createProduct = async (req, res) => {
 }
 
 module.exports = {
-    createProduct
+    createProduct,
+    getProduct
 }

@@ -1,10 +1,15 @@
 const {Router} = require('express');
 const {check} = require('express-validator');
-const {createProduct} = require('../controllers/products');
+const {getProduct, createProduct} = require('../controllers/products');
 const {validateFields, validateJWT} = require("../middlewares");
 const {existsProductByNameAndIdUser, existsCategoryById, isStateCategoryTrueById} = require('../helpers');
 
 const router = Router();
+
+// Obtener todos los PRODUCTS
+router.get('/', [
+    validateJWT
+], getProduct)
 
 // Crear nuevo PRODUCTO
 router.post('/', [
