@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Google SignIn</title>
+
+    <meta name="google-signin-client_id" content="272066497567-c9jcf708ieck22k8m1kadaomheapk36i.apps.googleusercontent.com">
+</head>
+<body>
+<h1>Google SignIn</h1>
+<hr>
+
+<div class="g-signin2" data-onsuccess="onSignIn"></div>
+
+<a href="#" onclick="signOut();">Sign out</a>
+
+<script src="https://apis.google.com/js/platform.js" async defer></script>
+<script src="./js/auth.js"></script>
+</body>
+</html>

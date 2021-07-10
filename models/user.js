@@ -28,6 +28,10 @@ const UserSchema = dbConnection.define('users', {
         type: DataTypes.INTEGER,
         required: true,
         defaultValue: 1
+    },
+    google: {
+        type: DataTypes.INTEGER,
+        defaultValue: 0
     }
 }, {
     hooks: {
