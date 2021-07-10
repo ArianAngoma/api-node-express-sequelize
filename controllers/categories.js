@@ -49,8 +49,24 @@ const createCategory = async (req, res) => {
     res.json(category);
 }
 
+const updateCategory = async (req, res) => {
+    const {id} = req.params;
+    const {name} = req.body;
+    const category = await Category.findByPk(id, {
+        include: [
+            {
+                model: User,
+                attributes: {exclude: ['password']},
+            }
+        ]
+    });
+    await category.update({name});
+    res.json(category);
+}
+
 module.exports = {
     getCategories,
     getCategoryById,
-    createCategory
+    createCategory,
+    updateCategory
 }

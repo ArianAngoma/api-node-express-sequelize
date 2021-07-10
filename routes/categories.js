@@ -1,6 +1,6 @@
 const {Router} = require('express');
 const {check} = require('express-validator');
-const {getCategories, getCategoryById, createCategory} = require('../controllers/categories');
+const {getCategories, getCategoryById, createCategory, updateCategory} = require('../controllers/categories');
 const {validateJWT, validateFields, isAdminRole} = require('../middlewares');
 const {existsCategoryByName, existsCategoryById, isStateCategoryTrueById} = require('../helpers');
 
@@ -28,5 +28,16 @@ router.post('/', [
     check('name').custom(existsCategoryByName),
     validateFields
 ], createCategory);
+
+router.put('/:id', [
+    validateJWT,
+    isAdminRole,
+    check('id', 'Id es requerido').notEmpty(),
+    check('id').custom(existsCategoryById),
+    check('id').custom(isStateCategoryTrueById),
+    check('name', 'Nombre es requerido').notEmpty(),
+    check('name').custom(existsCategoryByName),
+    validateFields
+], updateCategory);
 
 module.exports = router;

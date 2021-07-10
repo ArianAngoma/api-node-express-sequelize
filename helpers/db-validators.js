@@ -44,11 +44,9 @@ const isStateUserTrueByEmail = async (email) => {
 }
 
 // categories => Valida si existe CATEGORIA por NAME
-const existsCategoryByName = async (name) => {
-    const existsCategory = await Category.findAll({where: {name: name.toUpperCase()}});
-    if (existsCategory) existsCategory.forEach(categories => {
-        if (categories.state) throw new Error(`La categoria ${name} ya existe en la DB`);
-    });
+const existsCategoryByName = async (name, {req}) => {
+    const existsCategory = await Category.findOne({where: {name: name.toUpperCase(), state: true}});
+    if ((existsCategory) && (existsCategory.id !== Number(req.params.id))) throw new Error(`La categoria ${name} ya existe en la DB`);
 }
 
 // categories => Valida si existe CATEGORIA por ID
