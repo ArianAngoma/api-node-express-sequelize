@@ -76,7 +76,7 @@ const existsProductById = async (id) => {
 // products => Valida si USER puede editar PRODUCT
 const isRoleIdSameIdUser = async (id, {req}) => {
     const {userId} = await Product.findByPk(id);
-    if (userId !== req.user.id) throw new Error(`No puedes editar el producto con id ${id} - no lo creaste`);
+    if (userId !== req.user.id) throw new Error(`No puedes editar y/o eliminar el producto con id ${id} - no lo creaste`);
 }
 
 // products => Valida si existe PRODUCT por NAME y si es el mismo USER quien lo creó

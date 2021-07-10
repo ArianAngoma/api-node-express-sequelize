@@ -78,9 +78,20 @@ const updateProduct = async (req, res) => {
     res.json(product);
 }
 
+const deleteProduct = async (req, res) => {
+    const {id} = req.params;
+    const result = await Product.update({state: false}, {
+        where: {
+            id
+        }
+    });
+    res.json(result);
+}
+
 module.exports = {
     createProduct,
     getProductById,
     getProducts,
-    updateProduct
+    updateProduct,
+    deleteProduct
 }

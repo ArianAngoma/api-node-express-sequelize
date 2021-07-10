@@ -1,6 +1,6 @@
 const {Router} = require('express');
 const {check} = require('express-validator');
-const {getProducts, getProductById, createProduct, updateProduct} = require('../controllers/products');
+const {getProducts, getProductById, createProduct, updateProduct, deleteProduct} = require('../controllers/products');
 const {validateFields, validateJWT} = require("../middlewares");
 const {existsProductByNameAndIdUser, existsCategoryById, isStateCategoryTrueById, existsProductById, isRoleIdSameIdUser, existsProductByNameToUpdate} = require('../helpers');
 
@@ -43,5 +43,14 @@ router.put('/:id', [
     check('categoryId').custom(isStateCategoryTrueById).optional(),
     validateFields
 ], updateProduct);
+
+// Eliminar CATEGORY por ID
+router.delete('/:id', [
+    validateJWT,
+    check('id', 'Id de producto es requerido').notEmpty(),
+    check('id').custom(existsProductById),
+    check('id').custom(isRoleIdSameIdUser),
+    validateFields
+], deleteProduct);
 
 module.exports = router;
