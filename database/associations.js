@@ -6,3 +6,4 @@ User.belongsTo(Role);
 
 // USUARIO tiene muchas CATEGORIAS
 User.hasMany(Category);
+Category.belongsTo(User);

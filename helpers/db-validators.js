@@ -51,6 +51,19 @@ const existsCategoryByName = async (name) => {
     });
 }
 
+// categories => Valida si existe CATEGORIA por ID
+const existsCategoryById = async (id) => {
+    const existsCategory = await Category.findByPk(id);
+    if (!existsCategory) throw new Error(`La categoria con id ${id} no existe`);
+}
+
+// categories => Valida si STATE de CATEGORY es TRUE por ID
+const isStateCategoryTrueById = async (id) => {
+    const {state} = await Category.findByPk(id);
+    if (!state) throw new Error(`La categoria con id ${id} no existe - state: false`);
+}
+
+
 module.exports = {
     roleExistsById,
     roleExistsByName,
@@ -59,5 +72,7 @@ module.exports = {
     userExistsById,
     isStateUserTrueById,
     isStateUserTrueByEmail,
-    existsCategoryByName
+    existsCategoryByName,
+    existsCategoryById,
+    isStateCategoryTrueById
 }

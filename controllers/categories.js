@@ -1,4 +1,4 @@
-const {Category, User} = require('../models');
+const {Category, User, Role} = require('../models');
 
 const getCategories = async (req, res) => {
     const {limit = 5, from = 0} = req.query;
@@ -20,6 +20,22 @@ const getCategories = async (req, res) => {
     });
 }
 
+const getCategoryById = async (req, res) => {
+    const {id} = req.params;
+    const category = await Category.findByPk(id, {
+        include: [
+            {
+                model: User,
+                attributes: {exclude: ['password']},
+                include: [
+                    {model: Role}
+                ]
+            }
+        ]
+    });
+    res.json(category);
+}
+
 const createCategory = async (req, res) => {
     const {name} = req.body;
     const {id, name: nameUser, email, img} = req.user;
@@ -35,5 +51,6 @@ const createCategory = async (req, res) => {
 
 module.exports = {
     getCategories,
+    getCategoryById,
     createCategory
 }
