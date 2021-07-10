@@ -1,15 +1,23 @@
 const {Router} = require('express');
 const {check} = require('express-validator');
-const {getProduct, createProduct} = require('../controllers/products');
+const {getProducts, getProductById, createProduct} = require('../controllers/products');
 const {validateFields, validateJWT} = require("../middlewares");
-const {existsProductByNameAndIdUser, existsCategoryById, isStateCategoryTrueById} = require('../helpers');
+const {existsProductByNameAndIdUser, existsCategoryById, isStateCategoryTrueById, existsProductById} = require('../helpers');
 
 const router = Router();
 
 // Obtener todos los PRODUCTS
 router.get('/', [
     validateJWT
-], getProduct)
+], getProducts);
+
+// Obtener PRODUCT por ID
+router.get('/:id', [
+    validateJWT,
+    check('id', 'Id de producto es requerido').notEmpty(),
+    check('id').custom(existsProductById),
+    validateFields
+], getProductById);
 
 // Crear nuevo PRODUCTO
 router.post('/', [

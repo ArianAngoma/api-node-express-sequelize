@@ -61,10 +61,16 @@ const isStateCategoryTrueById = async (id) => {
     if (!state) throw new Error(`La categoria con id ${id} no existe - state: false`);
 }
 
-// products => Valida si existe PRODUCT y es el mismo USUER quien lo creó
+// products => Valida si existe PRODUCT por NAME y es el mismo USUER quien lo creó
 const existsProductByNameAndIdUser = async (name, {req}) => {
     const existsProduct = await Product.findOne({where: {name: name.toUpperCase(), state: true, userId: req.user.id}});
     if (existsProduct) throw new Error(`El producto ${name} ya esta registrado en la DB`);
+}
+
+// products => Valida si existe PRODUCT por ID
+const existsProductById = async (id) => {
+    const existsProduct = await Product.findOne({where: {id, state: true}});
+    if (!existsProduct) throw new Error(`El producto con ${id} no existe`);
 }
 
 
@@ -79,5 +85,6 @@ module.exports = {
     existsCategoryByName,
     existsCategoryById,
     isStateCategoryTrueById,
-    existsProductByNameAndIdUser
+    existsProductByNameAndIdUser,
+    existsProductById
 }

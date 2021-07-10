@@ -1,6 +1,6 @@
 const {Product, User, Category} = require('../models');
 
-const getProduct = async (req, res) => {
+const getProducts = async (req, res) => {
     const {limit = 5, from = 0} = req.query;
 
     const {count, rows} = await Product.findAndCountAll({
@@ -24,6 +24,20 @@ const getProduct = async (req, res) => {
         count,
         products: rows
     });
+}
+
+const getProductById = async (req, res) => {
+    const {id} = req.params;
+    const product = await Product.findByPk(id, {
+        include: [
+            {
+                model: User,
+                attributes: {exclude: ['password']},
+            },
+            {model: Category}
+        ],
+    });
+    res.json(product);
 }
 
 const createProduct = async (req, res) => {
@@ -57,5 +71,6 @@ const createProduct = async (req, res) => {
 
 module.exports = {
     createProduct,
-    getProduct
+    getProductById,
+    getProducts
 }
