@@ -1,4 +1,4 @@
-const {Role, User, Category} = require('../models');
+const {Role, User, Category, Product} = require('../models');
 
 // roles => Valida si existe ROLE por ID en la DB
 const roleExistsById = async (id) => {
@@ -61,6 +61,12 @@ const isStateCategoryTrueById = async (id) => {
     if (!state) throw new Error(`La categoria con id ${id} no existe - state: false`);
 }
 
+// products => Valida si existe PRODUCT y es el mismo USUER quien lo creó
+const existsProductByNameAndIdUser = async (name, {req}) => {
+    const existsProduct = await Product.findOne({where: {name: name.toUpperCase(), state: true, userId: req.user.id}});
+    if (existsProduct) throw new Error(`El producto ${name} ya esta registrado en la DB`);
+}
+
 
 module.exports = {
     roleExistsById,
@@ -72,5 +78,6 @@ module.exports = {
     isStateUserTrueByEmail,
     existsCategoryByName,
     existsCategoryById,
-    isStateCategoryTrueById
+    isStateCategoryTrueById,
+    existsProductByNameAndIdUser
 }
