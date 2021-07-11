@@ -85,6 +85,12 @@ const existsProductByNameToUpdate = async (name, {req}) => {
     if ((existsProduct) && (existsProduct.id !== Number(req.params.id))) throw new Error(`El producto ${name} ya existe`)
 }
 
+// Valida tablas permitidas
+const tablesAllowed = async (table, tables = []) => {
+    const included = tables.includes(table);
+    if (!included) throw new Error(`La tabla ${table} no es permitida - ${tables}`);
+}
+
 
 module.exports = {
     roleExistsById,
@@ -100,5 +106,6 @@ module.exports = {
     existsProductByNameAndIdUser,
     existsProductById,
     isRoleIdSameIdUser,
-    existsProductByNameToUpdate
+    existsProductByNameToUpdate,
+    tablesAllowed
 }
