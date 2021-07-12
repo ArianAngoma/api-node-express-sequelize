@@ -91,6 +91,18 @@ const tablesAllowed = async (table, tables = []) => {
     if (!included) throw new Error(`La tabla ${table} no es permitida - ${tables}`);
 }
 
+// users - jwt => Valida si token de req.user (JWT) es la misma que el id del usuario
+const isIdUserToken = async (id, {req}) => {
+    const idToken = req.user.id;
+    if (Number(id) !== idToken) throw new Error(`No puedes actualizar al usuario con id ${id} - token diferente`);
+}
+
+// productS - jwt => Valida si token de req.user (JWT) es la misma que el userId de PRODUCT
+const isUserIdToken = async (id , {req}) => {
+    const {userId} = await Product.findByPk(id);
+    if (userId !== req.user.id) throw new Error(`No puedes actualizar el producto con id ${id} - token diferente`);
+}
+
 
 module.exports = {
     roleExistsById,
@@ -107,5 +119,7 @@ module.exports = {
     existsProductById,
     isRoleIdSameIdUser,
     existsProductByNameToUpdate,
-    tablesAllowed
+    tablesAllowed,
+    isIdUserToken,
+    isUserIdToken
 }
