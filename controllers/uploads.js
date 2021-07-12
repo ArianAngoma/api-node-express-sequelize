@@ -48,7 +48,36 @@ const updateImg = async (req, res) => {
     }
 }
 
+const showImg = async (req, res) => {
+    const {table, id} = req.params;
+
+    let model;
+    switch (table) {
+        case 'users':
+            model = await User.findByPk(id);
+            if (!model) return res.status(400).json({msg: `No existe usuario con id ${id}`});
+            break;
+        case 'products':
+            model = await Product.findByPk(id);
+            if (!model) return res.status(400).json({msg: `No existe producto con id ${id}`});
+            break;
+        default:
+            return res.status(500).json({msg: 'Se me olvidó validar esto'});
+    }
+
+    // Limpiar imágenes previas
+    if (model.img) {
+        // Borrar imagen del servidor
+        const pathImg = path.join(__dirname, '../uploads', table, model.img);
+        if (fs.existsSync(pathImg)) return res.sendFile(pathImg);
+    }
+
+    const pathPlaceHolder = path.join(__dirname, '../assets/no-image.jpg');
+    res.sendFile(pathPlaceHolder);
+}
+
 module.exports = {
     uploadFiles,
-    updateImg
+    updateImg,
+    showImg
 }

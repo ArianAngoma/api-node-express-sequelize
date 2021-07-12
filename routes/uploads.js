@@ -1,7 +1,7 @@
 const {Router} = require('express');
 const {check} = require('express-validator');
 
-const {uploadFiles, updateImg} = require('../controllers/uploads');
+const {uploadFiles, updateImg, showImg} = require('../controllers/uploads');
 const {validateFields, validateJWT, validateFileUpload} = require("../middlewares");
 const {
     userExistsById,
@@ -27,5 +27,14 @@ router.put('/:table/:id', [
     check('id').if(check('table').equals('products')).custom(existsProductById).custom(isUserIdToken),
     validateFields
 ], updateImg);
+
+router.get('/:table/:id', [
+    validateJWT,
+    check('id', 'Id es requerido').notEmpty(),
+    check('table').custom(table => tablesAllowed(table, ['users', 'products'])),
+    check('id').if(check('table').equals('users')).custom(userExistsById).custom(isStateUserTrueById),
+    check('id').if(check('table').equals('products')).custom(existsProductById),
+    validateFields
+], showImg)
 
 module.exports = router;
