@@ -1,7 +1,7 @@
 const {Router} = require('express');
 const {check} = require('express-validator');
 
-const {uploadFiles, updateImg, showImg} = require('../controllers/uploads');
+const {uploadFiles, updateImg, showImg, updateImgCloudinary} = require('../controllers/uploads');
 const {validateFields, validateJWT, validateFileUpload} = require("../middlewares");
 const {
     userExistsById,
@@ -26,7 +26,9 @@ router.put('/:table/:id', [
     check('id').if(check('table').equals('users')).custom(userExistsById).custom(isStateUserTrueById).custom(isIdUserToken),
     check('id').if(check('table').equals('products')).custom(existsProductById).custom(isUserIdToken),
     validateFields
-], updateImg);
+], updateImgCloudinary);
+// Contolador para actulizar imagen local
+/*], updateImg);*/
 
 router.get('/:table/:id', [
     validateJWT,
