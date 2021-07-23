@@ -6,6 +6,7 @@ const {userExistsByEmailAuth, isStateUserTrueByEmail} = require('../helpers');
 
 const router = Router();
 
+// SignIn
 router.post('/sign-in', [
     check('email', 'Email es requerido').notEmpty(),
     check('email', 'Email no válido').isEmail(),
@@ -15,6 +16,7 @@ router.post('/sign-in', [
     validateFields
 ], signIn);
 
+// SignIn por Google
 router.post('/google', [
     check('id_token', 'Id Token es necesario').notEmpty(),
     validateFields
