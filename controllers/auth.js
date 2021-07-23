@@ -29,6 +29,7 @@ const googleSignIn = async (req, res) => {
     const {id_token} = req.body;
 
     try {
+        // Verificar id token de Google
         const {name, email, img} = await googleVerify(id_token);
         let user = await User.findOne({
             where: {
