@@ -2,6 +2,7 @@ const {OAuth2Client} = require('google-auth-library');
 
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
+// Verificar token de Google
 const googleVerify = async (id_token) => {
     const ticket = await client.verifyIdToken({
         idToken: id_token,
