@@ -11,6 +11,8 @@ function onSignIn(googleUser) {
 
     const id_token = googleUser.getAuthResponse().id_token;
     const data = {id_token};
+
+    // Iniciar sesión con Google
     fetch(url, {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
