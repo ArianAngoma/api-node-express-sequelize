@@ -30,6 +30,7 @@ router.put('/:table/:id', [
 // Contolador para actulizar imagen local
 /*], updateImg);*/
 
+// Obtener IMG por TABLE y ID
 router.get('/:table/:id', [
     validateJWT,
     check('id', 'Id es requerido').notEmpty(),
